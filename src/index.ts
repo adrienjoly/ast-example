@@ -12,8 +12,11 @@ async function loadSongs(): Promise<Song[]> {
   }));
 }
 
+let loadedSongs: Promise<Song[]> | undefined;
+
 async function getSongs(): Promise<Song[]> {
-  return loadSongs(); // TODO: cache for speed optimization
+  if (!loadedSongs) loadedSongs = loadSongs(); // lazy caching, for speed optimization
+  return loadedSongs;
 }
 
 (async () => {
