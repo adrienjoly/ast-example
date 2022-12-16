@@ -21,11 +21,5 @@ async function getSongs(): Promise<Song[]> {
 }
 
 (async () => {
-  console.time("first call");
-  await getSongs();
-  console.timeEnd("first call");
-
-  console.time("second call");
-  await getSongs();
-  console.timeEnd("second call");
+  console.log(await getSongs());
 })();
