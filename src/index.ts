@@ -12,4 +12,8 @@ async function loadSongs(): Promise<Song[]> {
   }));
 }
 
-loadSongs().then((songs) => console.log(songs));
+async function getSongs(): Promise<Song[]> {
+  return loadSongs(); // TODO: cache for speed optimization
+}
+
+getSongs().then((songs) => console.log(songs));
