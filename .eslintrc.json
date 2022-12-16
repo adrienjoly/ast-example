@@ -10,6 +10,8 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["@typescript-eslint"],
-  "rules": {}
+  "plugins": ["deprecation", "@typescript-eslint"],
+  "rules": {
+    "deprecation/deprecation": "warn"
+  }
 }
