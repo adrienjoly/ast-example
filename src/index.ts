@@ -21,5 +21,5 @@ async function getSongs(): Promise<Song[]> {
 }
 
 (async () => {
-  console.log(await getSongs());
+  console.log(await getSongs()); // `$ yarn lint` and vscode warn about this call to a deprecated function
 })();
