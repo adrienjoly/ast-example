@@ -11,12 +11,8 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["deprecate", "deprecation", "@typescript-eslint"],
+  "plugins": ["deprecation", "@typescript-eslint"],
   "rules": {
-    "deprecate/function": [
-      "warn",
-      { "name": "loadSongs", "use": "the new one" }
-    ],
     "deprecation/deprecation": "warn"
   }
 }
