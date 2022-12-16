@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "format": "prettier --write .",
     "check": "tsc --noEmit",
     "start": "tsx src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
