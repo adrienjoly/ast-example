@@ -14,7 +14,7 @@ const directRefs =
     ?.getFunction(targetFunction)
     ?.findReferencesAsNodes() || [];
 
-const allRefs = [];
+const allRefs = [...directRefs];
 
 type Callable = tsmorph.FunctionDeclaration; // note: this only works if the `function` keyword was used
 
@@ -25,19 +25,15 @@ const findParentFunction = (ref: tsmorph.Node) => {
   let node: tsmorph.Node | undefined = ref;
   while (node && !isNamedFunction(node)) {
     node = node.getParent();
-    console.debug("getParent", node?.getKindName(), node?.getText());
   }
   return node;
 };
 
-for (const directRef of directRefs) {
-  allRefs.push(directRef);
+for (const directRef of allRefs) {
   // 1. find the caller (i.e. function that called getSongs), for that direct reference
   const caller = findParentFunction(directRef);
   // 2. push all references to that caller, into allRefs
   if (caller) allRefs.push(...caller.findReferencesAsNodes());
-  // 3. then, apply the same process to those references, until they are not referenced anywhere.
-  // TODO
 }
 
 const renderCaller = (fctCall: tsmorph.Node) => ({
