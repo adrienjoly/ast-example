@@ -20,6 +20,12 @@ async function getSongs(): Promise<Song[]> {
   return loadedSongs;
 }
 
+async function getOfficialVideos(): Promise<Song[]> {
+  return (await getSongs()).filter((song) =>
+    song.name.match(/official video/i)
+  );
+}
+
 (async () => {
-  console.log(await getSongs()); // `$ yarn lint` and vscode warn about this call to a deprecated function
+  console.log(await getOfficialVideos()); // => we're not warned about getOfficialVideos() relying on a deprecated function
 })();
