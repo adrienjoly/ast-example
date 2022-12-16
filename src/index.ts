@@ -1,3 +1,5 @@
 import * as fs from "fs";
 
-console.log("test");
+fs.readFile("src/index.ts", (err, data) => {
+  console.log(data.toString());
+});
