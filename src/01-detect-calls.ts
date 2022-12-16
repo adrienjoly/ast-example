@@ -14,10 +14,9 @@ const functionCalls =
     ?.getFunction(targetFunction)
     ?.findReferencesAsNodes() || [];
 
-console.log(
-  `calls to ${targetFunction}:`,
-  functionCalls.map((fctCall) => ({
-    file: fctCall.getSourceFile().getFilePath(),
-    line: fctCall.getStartLineNumber(),
-  }))
-);
+const renderCaller = (fctCall: tsmorph.Node) => ({
+  file: fctCall.getSourceFile().getFilePath(),
+  line: fctCall.getStartLineNumber(),
+});
+
+console.log(`calls to ${targetFunction}:`, functionCalls.map(renderCaller));
