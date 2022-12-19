@@ -34,7 +34,12 @@ async function searchOfficialVideos(searchTerm: string): Promise<Song[]> {
   );
 }
 
-// 3rd-level caller (NOT reported by existing eslint plugins)
+// other 1st-level caller
+async function countVideos(): Promise<number> {
+  return (await getSongs()).length;
+}
+
 (async () => {
   console.log(await searchOfficialVideos("Alvvays"));
+  console.log(`total videos: ${await countVideos()}`);
 })();
