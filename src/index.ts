@@ -12,16 +12,11 @@ async function loadSongs(): Promise<Song[]> {
   }));
 }
 
-let loadedSongs: Promise<Song[]> | undefined;
-
 // 1st-level caller (reported by existing eslint plugins)
 async function getOfficialVideos(): Promise<Song[]> {
-  return (
-    await (() => {
-      if (!loadedSongs) loadedSongs = loadSongs(); // lazy caching, for speed optimization
-      return loadedSongs;
-    })()
-  ).filter((song) => song.name.match(/official video/i));
+  return (await loadSongs()).filter((song) =>
+    song.name.match(/official video/i)
+  );
 }
 
 // 2nd-level caller (NOT reported by existing eslint plugins)
