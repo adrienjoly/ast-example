@@ -28,10 +28,9 @@ jobs:
       - run: npm ci
       - name: Track dependency on deprecated code
         run: |
+          npm run --silent deprecated-calls
           MAX_DEPRECATED_REFS=1
-          DEPRECATED_REFS=$(npm run --silent deprecated-calls)
-          echo ${DEPRECATED_REFS}
-          if [ $(echo ${DEPRECATED_REFS} | wc -l) -gt ${MAX_DEPRECATED_REFS} ]; then
+          if [ $(npm run --silent deprecated-calls | wc -l) -gt ${MAX_DEPRECATED_REFS} ]; then
               echo "❌ Please reduce the number of references to deprecated code"
           fi
       - run: npm run check
