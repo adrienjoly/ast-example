@@ -20,6 +20,10 @@ async function getSongs(): Promise<Song[]> {
   return loadedSongs;
 }
 
+async function countSongs(): Promise<number> {
+  return (await require("../data/songs.json")).length;
+}
+
 // 1st-level caller (reported by existing eslint plugins)
 async function getOfficialVideos(): Promise<Song[]> {
   return (await getSongs()).filter((song) =>
@@ -36,7 +40,7 @@ async function searchOfficialVideos(searchTerm: string): Promise<Song[]> {
 
 // other 1st-level caller
 async function countVideos(): Promise<number> {
-  return (await getSongs()).length;
+  return await countSongs();
 }
 
 (async () => {
