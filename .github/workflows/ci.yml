@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+env:
+  FORCE_COLOR: "3" # asks Chalk to use colors in logs of ESLint and others
+
+jobs:
+  code-checks:
+    name: Code checks
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    timeout-minutes: 5
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: browniebroke/read-nvmrc-action@v1 # Read node version from `.nvmrc` file
+        id: nvmrc
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "${{ steps.nvmrc.outputs.node_version }}"
+          cache: "npm"
+      - run: npm ci
+      - name: Track dependency on deprecated code
+        run: |
+          MAX_DEPRECATED_REFS=1
+          DEPRECATED_REFS=$(npm run --silent deprecated-calls)
+          if [ $(echo ${DEPRECATED_REFS} | wc -l) -gt ${MAX_DEPRECATED_REFS} ]; then
+              echo "❌ Please reduce the number of references to deprecated code"
+              echo ${DEPRECATED_REFS}
+          fi
+      - run: npm run check
+      - run: npm run lint
+      - name: npm run format
+        run: |
+          npm run format
+          git status
+          echo ℹ️  If this test fails, run `npm run format` and commit the changes.
+          exit $(git diff | wc -l)
