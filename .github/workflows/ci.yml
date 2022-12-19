@@ -30,9 +30,9 @@ jobs:
         run: |
           MAX_DEPRECATED_REFS=1
           DEPRECATED_REFS=$(npm run --silent deprecated-calls)
+          echo ${DEPRECATED_REFS}
           if [ $(echo ${DEPRECATED_REFS} | wc -l) -gt ${MAX_DEPRECATED_REFS} ]; then
               echo "❌ Please reduce the number of references to deprecated code"
-              echo ${DEPRECATED_REFS}
           fi
       - run: npm run check
       - run: npm run lint
