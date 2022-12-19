@@ -32,11 +32,12 @@ for (const directRef of allRefs) {
   if (caller) allRefs.push(...caller.findReferencesAsNodes());
 }
 
-const renderCaller = (fctCall: tsmorph.Node) => ({
-  file: fctCall.getSourceFile().getFilePath(),
-  line: fctCall.getStartLineNumber(),
-  callee: fctCall.getText(),
-  caller: findParentFunction(fctCall)?.getName() ?? "[top level]",
-});
+const renderCaller = (fctCall: tsmorph.Node) => {
+  const filePath = fctCall.getSourceFile().getFilePath();
+  const lineNumber = fctCall.getStartLineNumber();
+  const callee = fctCall.getText();
+  const caller = findParentFunction(fctCall)?.getName() ?? "[top level]";
+  return `${filePath}:${lineNumber}, ${callee} called by ${caller}`;
+};
 
-console.log(`callers of ${targetFunction}:`, allRefs.map(renderCaller));
+allRefs.forEach((ref) => console.log(renderCaller(ref)));
