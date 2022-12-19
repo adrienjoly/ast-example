@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "deprecated-calls": "tsx src/02-detect-all-callers.ts",
     "lint": "eslint src",
     "format": "prettier --write .",
     "check": "tsc --noEmit",
