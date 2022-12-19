@@ -4,6 +4,17 @@
 
 import * as tsmorph from "ts-morph";
 
+const isFunction = (node: tsmorph.Node): node is tsmorph.FunctionDeclaration =>
+  node instanceof tsmorph.FunctionDeclaration; // note: this only works if the `function` keyword was used
+
+const findParentFunction = (ref: tsmorph.Node) => {
+  let node: tsmorph.Node | undefined = ref;
+  while (node && !isFunction(node)) {
+    node = node.getParent();
+  }
+  return node;
+};
+
 const tsConfigFilePath = "./tsconfig.json";
 const targetFile = "./src/index.ts";
 const targetFunction = "getSongs";
@@ -16,23 +27,8 @@ const directRefs =
 
 const allRefs = [...directRefs];
 
-type Callable = tsmorph.FunctionDeclaration; // note: this only works if the `function` keyword was used
-
-const isNamedFunction = (node: tsmorph.Node): node is Callable =>
-  node instanceof tsmorph.FunctionDeclaration; // note: this only works if the `function` keyword was used
-
-const findParentFunction = (ref: tsmorph.Node) => {
-  let node: tsmorph.Node | undefined = ref;
-  while (node && !isNamedFunction(node)) {
-    node = node.getParent();
-  }
-  return node;
-};
-
 for (const directRef of allRefs) {
-  // 1. find the caller (i.e. function that called getSongs), for that direct reference
   const caller = findParentFunction(directRef);
-  // 2. push all references to that caller, into allRefs
   if (caller) allRefs.push(...caller.findReferencesAsNodes());
 }
 
