@@ -26,14 +26,6 @@ jobs:
           node-version: "${{ steps.nvmrc.outputs.node_version }}"
           cache: "npm"
       - run: npm ci
-      - name: Track dependency on deprecated code
-        run: |
-          npm run --silent deprecated-calls
-          MAX_DEPRECATED_REFS=0
-          if [ $(npm run --silent deprecated-calls | wc -l) -gt ${MAX_DEPRECATED_REFS} ]; then
-              echo "❌ Please reduce the number of references to deprecated code"
-              exit 1
-          fi
       - run: npm run check
       - run: npm run lint
       - name: npm run format
