@@ -12,17 +12,9 @@ async function loadSongs(): Promise<Song[]> {
   }));
 }
 
-let loadedSongs: Promise<Song[]> | undefined;
-
-/** @deprecated */
-async function getSongs(): Promise<Song[]> {
-  if (!loadedSongs) loadedSongs = loadSongs(); // lazy caching, for speed optimization
-  return loadedSongs;
-}
-
 // 1st-level caller (reported by existing eslint plugins)
 async function getOfficialVideos(): Promise<Song[]> {
-  return (await getSongs()).filter((song) =>
+  return (await loadSongs()).filter((song) =>
     song.name.match(/official video/i)
   );
 }
